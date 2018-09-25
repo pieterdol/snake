@@ -16,6 +16,7 @@ public class Snake : MonoBehaviour
         Left
     };
     public Directions direction = Directions.Right;
+    public Directions currentDirection = Directions.Right;
 
     public float moveEveryXSeconds = 0.1f;
     public int blockStartAmount = 3;
@@ -56,6 +57,7 @@ public class Snake : MonoBehaviour
 
     public void Move()
     {
+        currentDirection = direction;
         Vector3 newPosition = GetNewPositionForFirstBlock(transform.GetChild(0).position);
         foreach (Transform snakeBlock in transform) {
             Vector3 oldPosition = snakeBlock.position;

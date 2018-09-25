@@ -44,13 +44,13 @@ public class GameManager : MonoBehaviour {
     private void Update()
     {
         Vector3 newPosition = transform.position;
-        if (Input.GetKey(KeyCode.LeftArrow) && snake.direction != Snake.Directions.Right) {
+        if (Input.GetKey(KeyCode.LeftArrow) && snake.currentDirection != Snake.Directions.Right) {
             snake.direction = Snake.Directions.Left;
-        } else if (Input.GetKey(KeyCode.RightArrow) && snake.direction != Snake.Directions.Left) {
+        } else if (Input.GetKey(KeyCode.RightArrow) && snake.currentDirection != Snake.Directions.Left) {
             snake.direction = Snake.Directions.Right;
-        } else if (Input.GetKey(KeyCode.DownArrow) && snake.direction != Snake.Directions.Up) {
+        } else if (Input.GetKey(KeyCode.DownArrow) && snake.currentDirection != Snake.Directions.Up) {
             snake.direction = Snake.Directions.Down;
-        } else if (Input.GetKey(KeyCode.UpArrow) && snake.direction != Snake.Directions.Down) {
+        } else if (Input.GetKey(KeyCode.UpArrow) && snake.currentDirection != Snake.Directions.Down) {
             snake.direction = Snake.Directions.Up;
         }
     }
