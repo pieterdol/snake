@@ -29,21 +29,7 @@ public class Snake : MonoBehaviour
     // Use this for initialization
     void Start ()
     {
-        CreateInitialBlocks(startPosition);
-
         Invoke("Move", moveEveryXSeconds);
-    }
-
-    private void CreateInitialBlocks(Vector3 position)
-    {
-        for (int i = 0; i < blockStartAmount; i++) {
-            SnakeBlock snakeBlock = CreateBlock(position);
-            position = snakeBlock.Position();
-            // Subtract one unit for every block
-            position.x -= (i + 1);
-        }
-
-        ConnectSnakeBlocks();
     }
 
     private SnakeBlock CreateBlock(Vector3 position)
