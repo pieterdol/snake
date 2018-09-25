@@ -112,7 +112,6 @@ public class Snake : MonoBehaviour
         SnakeBlock[] snakeBlocks = FindObjectsOfType<SnakeBlock>();
         int snakeBlocksCount = snakeBlocks.Length;
 
-        // Might be able to improve this, not all parts have to connect every time the snake moves (only first, second, second to last, last)
         for (int i = 0; i < snakeBlocksCount; i++) {
             snakeBlocks[i].HideAllParts();
             // Connect to previous part
