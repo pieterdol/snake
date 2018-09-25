@@ -22,18 +22,11 @@ public class GameManager : MonoBehaviour
 
     public float gridOffsetY = 1;
 
-    [Header("Walls")]
-    public GameObject topWallPrefab;
-    public GameObject bottomWallPrefab;
-    public GameObject leftWallPrefab;
-    public GameObject rightWallPrefab;
-
     // Use this for initialization
     void Start()
     {
         scoreText.text = "Score: 0";
 
-        CreateWalls();
         foodSpawner.Spawn(FreeSpots());
     }
 
@@ -51,14 +44,6 @@ public class GameManager : MonoBehaviour
         } else if (Input.GetKey(KeyCode.UpArrow) && snake.currentDirection != Snake.Directions.Down) {
             snake.direction = Snake.Directions.Up;
         }
-    }
-
-    private void CreateWalls()
-    {
-        CreateUpperLowerWall(gridHeight / 2 + gridOffsetY, topWallPrefab);
-        CreateUpperLowerWall((gridHeight / 2) * -1 + gridOffsetY, bottomWallPrefab);
-        CreateSideWall((gridWidth / 2 + gridOffsetX) * -1 - 1, leftWallPrefab);
-        CreateSideWall(gridWidth / 2 + gridOffsetX + 1, rightWallPrefab);
     }
 
     private void CreateSideWall(float xPosition, GameObject wallPrefab)
