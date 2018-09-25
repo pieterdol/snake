@@ -90,6 +90,9 @@ public class Snake : MonoBehaviour
     private void SetDirectionToFood()
     {
         Food food = FindObjectOfType<Food>();
+        if (!food) {
+            return;
+        }
 
         Transform snakeHead = transform.GetChild(0);
 

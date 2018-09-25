@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: 0";
 
         CreateWalls();
-        SpawnFood();
+        foodSpawner.Spawn(FreeSpots());
     }
 
     private void Update()
@@ -105,13 +105,49 @@ public class GameManager : MonoBehaviour
     {
         score++;
 
-        SpawnFood();
+        List<Vector3> freeSpots = FreeSpots();
+        if (freeSpots.Count <= 0) {
+            // @TODO Handle winning the game
+            Debug.Log("YOU WIN!!!");
+        } else {
+            foodSpawner.Spawn(freeSpots);
 
-        snake.Grow();
+            snake.Grow();
+        }
     }
 
-    private void SpawnFood()
+    internal List<Vector3> FreeSpots()
     {
-        foodSpawner.Spawn(this);
+        SnakeBlock[] snakeBlocks = FindObjectsOfType<SnakeBlock>();
+
+        Vector3 lowerLeftCorner = new Vector3(
+            (gridWidth / 2) * -1,
+            (gridHeight / 2) * -1
+        );
+        Vector3 upperRightCorner = new Vector3(
+            gridWidth / 2,
+            gridHeight / 2
+        );
+
+        List<Vector3> freeSpots = new List<Vector3>();
+        for (int y = (int)lowerLeftCorner.y + 1; y <= (int)upperRightCorner.y + 1; y++) {
+            for (int x = (int)lowerLeftCorner.x; x <= (int)upperRightCorner.x; x++) {
+                Boolean freeSpot = true;
+                foreach (SnakeBlock snakeBlock in snakeBlocks) {
+                    if (snakeBlock.transform.position.x == x && snakeBlock.transform.position.y == y) {
+                        freeSpot = false;
+                        break;
+                    }
+                }
+
+                if (freeSpot) {
+                    freeSpots.Add(
+                        new Vector3(x, y)
+                    );
+                }
+            }
+        }
+
+        return freeSpots;
     }
 }
