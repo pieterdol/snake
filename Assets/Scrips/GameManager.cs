@@ -109,6 +109,8 @@ public class GameManager : MonoBehaviour
         if (freeSpots.Count <= 0) {
             // @TODO Handle winning the game
             Debug.Log("YOU WIN!!!");
+
+            snake.StopMoving();
         } else {
             foodSpawner.Spawn(freeSpots);
 

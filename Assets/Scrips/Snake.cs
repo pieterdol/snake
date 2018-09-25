@@ -23,8 +23,8 @@ public class Snake : MonoBehaviour
     public int blockStartAmount = 3;
 
     private bool isAlive = true;
-
     private bool grow = false;
+    private bool isPlaying = true;
 
     // Use this for initialization
     void Start ()
@@ -82,7 +82,7 @@ public class Snake : MonoBehaviour
         }
         ConnectSnakeBlocks();
 
-        if (isAlive) {
+        if (isPlaying) {
             Invoke("Move", moveEveryXSeconds);
         }
     }
@@ -112,6 +112,7 @@ public class Snake : MonoBehaviour
         SnakeBlock[] snakeBlocks = FindObjectsOfType<SnakeBlock>();
         int snakeBlocksCount = snakeBlocks.Length;
 
+        // Might be able to improve this, not all parts have to connect every time the snake moves (only first, second, second to last, last)
         for (int i = 0; i < snakeBlocksCount; i++) {
             snakeBlocks[i].HideAllParts();
             // Connect to previous part
@@ -123,6 +124,11 @@ public class Snake : MonoBehaviour
                 snakeBlocks[i].ConnectTo(snakeBlocks[i + 1]);
             }
         }
+    }
+
+    internal void StopMoving()
+    {
+        isPlaying = false;
     }
 
     private Vector3 GetNewPositionForFirstBlock(Vector3 currentPosition)
