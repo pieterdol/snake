@@ -76,14 +76,10 @@ public class Snake : MonoBehaviour
 
         for (int i = 0; i < snakeBlocksCount; i++) {
             snakeBlocks[i].HideAllParts();
-            Debug.Log(" --- Snake block: " + snakeBlocks[i].name + " --- ");
-
             if (i > 0) {
-                Debug.Log("Previous: " + snakeBlocks[i - 1].name);
                 snakeBlocks[i].ConnectTo(snakeBlocks[i - 1]);
             }
             if (i < snakeBlocksCount - 1) {
-                Debug.Log("Next: " + snakeBlocks[i + 1].name);
                 snakeBlocks[i].ConnectTo(snakeBlocks[i + 1]);
             }
         }
