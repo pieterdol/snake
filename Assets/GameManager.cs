@@ -30,7 +30,6 @@ public class GameManager : MonoBehaviour {
         scoreText.text = "Score: 0";
 
         CreateWalls();
-        //CreateSnake();
     }
 
     private void CreateWalls()
@@ -43,7 +42,6 @@ public class GameManager : MonoBehaviour {
 
     private void Update()
     {
-        // Horizontal movement
         Vector3 newPosition = transform.position;
         if (Input.GetKey(KeyCode.LeftArrow) && snake.direction != Snake.Directions.Right) {
             snake.direction = Snake.Directions.Left;
