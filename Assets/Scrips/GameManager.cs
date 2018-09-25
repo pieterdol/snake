@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     [Header("Snake")]
     public Snake snake;
@@ -12,11 +13,13 @@ public class GameManager : MonoBehaviour {
 
     [Header("UI")]
     public Text scoreText;
+    private int score = 0;
 
     [Header("Grid")]
     public int gridHeight = 16;
     public int gridWidth = 26;
     public float gridOffsetX = 0;
+
     public float gridOffsetY = 1;
 
     [Header("Walls")]
@@ -26,23 +29,18 @@ public class GameManager : MonoBehaviour {
     public GameObject rightWallPrefab;
 
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         scoreText.text = "Score: 0";
 
         CreateWalls();
-    }
-
-    private void CreateWalls()
-    {
-        CreateUpperLowerWall(gridHeight / 2 + gridOffsetY, topWallPrefab);
-        CreateUpperLowerWall((gridHeight / 2) * -1 + gridOffsetY, bottomWallPrefab);
-        CreateSideWall((gridWidth / 2 + gridOffsetX) * -1 - 1, leftWallPrefab);
-        CreateSideWall(gridWidth / 2 + gridOffsetX + 1, rightWallPrefab);
+        SpawnFood();
     }
 
     private void Update()
     {
+        scoreText.text = "Score: " +  score.ToString();
+
         Vector3 newPosition = transform.position;
         if (Input.GetKey(KeyCode.LeftArrow) && snake.currentDirection != Snake.Directions.Right) {
             snake.direction = Snake.Directions.Left;
@@ -53,6 +51,14 @@ public class GameManager : MonoBehaviour {
         } else if (Input.GetKey(KeyCode.UpArrow) && snake.currentDirection != Snake.Directions.Down) {
             snake.direction = Snake.Directions.Up;
         }
+    }
+
+    private void CreateWalls()
+    {
+        CreateUpperLowerWall(gridHeight / 2 + gridOffsetY, topWallPrefab);
+        CreateUpperLowerWall((gridHeight / 2) * -1 + gridOffsetY, bottomWallPrefab);
+        CreateSideWall((gridWidth / 2 + gridOffsetX) * -1 - 1, leftWallPrefab);
+        CreateSideWall(gridWidth / 2 + gridOffsetX + 1, rightWallPrefab);
     }
 
     private void CreateSideWall(float xPosition, GameObject wallPrefab)
@@ -93,5 +99,19 @@ public class GameManager : MonoBehaviour {
             ) as GameObject;
             wall.transform.parent = transform;
         }
+    }
+
+    public void FoodWasEaten()
+    {
+        score++;
+
+        SpawnFood();
+
+        snake.Grow();
+    }
+
+    private void SpawnFood()
+    {
+        foodSpawner.Spawn(this);
     }
 }

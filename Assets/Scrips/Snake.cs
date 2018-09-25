@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Snake : MonoBehaviour
 {
+    public bool autoPlayEnabled = false;
     public Vector3 startPosition;
     public SnakeBlock snakeBlockPrefab;
 
@@ -22,6 +23,8 @@ public class Snake : MonoBehaviour
     public int blockStartAmount = 3;
 
     private bool isAlive = true;
+
+    private bool grow = false;
 
     // Use this for initialization
     void Start ()
@@ -55,8 +58,17 @@ public class Snake : MonoBehaviour
         return snakeBlock;
     }
 
+    public void Grow()
+    {
+        grow = true;
+    }
+
     public void Move()
     {
+        if (autoPlayEnabled) {
+            SetDirectionToFood();
+        }
+
         currentDirection = direction;
         Vector3 newPosition = GetNewPositionForFirstBlock(transform.GetChild(0).position);
         foreach (Transform snakeBlock in transform) {
@@ -64,10 +76,31 @@ public class Snake : MonoBehaviour
             snakeBlock.position = newPosition;
             newPosition = oldPosition;
         }
+        if (grow) {
+            CreateBlock(newPosition);
+            grow = false;
+        }
         ConnectSnakeBlocks();
 
         if (isAlive) {
             Invoke("Move", moveEveryXSeconds);
+        }
+    }
+
+    private void SetDirectionToFood()
+    {
+        Food food = FindObjectOfType<Food>();
+
+        Transform snakeHead = transform.GetChild(0);
+
+        if (snakeHead.position.x > food.transform.position.x) {
+            direction = Directions.Left;
+        } else if (snakeHead.position.x < food.transform.position.x) {
+            direction = Directions.Right;
+        } else if (snakeHead.position.y > food.transform.position.y) {
+            direction = Directions.Down;
+        } else if (snakeHead.position.y < food.transform.position.y) {
+            direction = Directions.Up;
         }
     }
 
@@ -78,9 +111,11 @@ public class Snake : MonoBehaviour
 
         for (int i = 0; i < snakeBlocksCount; i++) {
             snakeBlocks[i].HideAllParts();
+            // Connect to previous part
             if (i > 0) {
                 snakeBlocks[i].ConnectTo(snakeBlocks[i - 1]);
             }
+            // Connect to next part
             if (i < snakeBlocksCount - 1) {
                 snakeBlocks[i].ConnectTo(snakeBlocks[i + 1]);
             }
