@@ -27,8 +27,37 @@ public class SnakeBlock : MonoBehaviour
         position = newPosition;
     }
 
-    internal void ShowTop()
+    private void ShowPart(GameObject part)
     {
-        top.GetComponent<Renderer>().enabled = true;
+        part.GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    private void HidePart(GameObject part)
+    {
+        part.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    public void ConnectTo(SnakeBlock snakeBlock)
+    {
+        if (transform.position.y < snakeBlock.transform.position.y) {
+            ShowPart(top);
+        }
+        if (transform.position.y > snakeBlock.transform.position.y) {
+            ShowPart(bottom);
+        }
+        if (transform.position.x > snakeBlock.transform.position.x) {
+            ShowPart(left);
+        }
+        if (transform.position.x < snakeBlock.transform.position.x) {
+            ShowPart(right);
+        }
+    }
+
+    public void HideAllParts()
+    {
+        HidePart(top);
+        HidePart(bottom);
+        HidePart(left);
+        HidePart(right);
     }
 }

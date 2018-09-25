@@ -38,6 +38,8 @@ public class Snake : MonoBehaviour
             // Subtract one unit for every block
             position.x -= (i + 1);
         }
+
+        ConnectSnakeBlocks();
     }
 
     private SnakeBlock CreateBlock(Vector3 position)
@@ -60,9 +62,30 @@ public class Snake : MonoBehaviour
             snakeBlock.position = newPosition;
             newPosition = oldPosition;
         }
+        ConnectSnakeBlocks();
 
         if (isAlive) {
             Invoke("Move", moveEveryXSeconds);
+        }
+    }
+
+    private void ConnectSnakeBlocks()
+    {
+        SnakeBlock[] snakeBlocks = FindObjectsOfType<SnakeBlock>();
+        int snakeBlocksCount = snakeBlocks.Length;
+
+        for (int i = 0; i < snakeBlocksCount; i++) {
+            snakeBlocks[i].HideAllParts();
+            Debug.Log(" --- Snake block: " + snakeBlocks[i].name + " --- ");
+
+            if (i > 0) {
+                Debug.Log("Previous: " + snakeBlocks[i - 1].name);
+                snakeBlocks[i].ConnectTo(snakeBlocks[i - 1]);
+            }
+            if (i < snakeBlocksCount - 1) {
+                Debug.Log("Next: " + snakeBlocks[i + 1].name);
+                snakeBlocks[i].ConnectTo(snakeBlocks[i + 1]);
+            }
         }
     }
 
