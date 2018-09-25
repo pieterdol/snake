@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
     [Header("Snake")]
     public Snake snake;
+    public FoodSpawner foodSpawner;
 
     [Header("UI")]
     public Text scoreText;
