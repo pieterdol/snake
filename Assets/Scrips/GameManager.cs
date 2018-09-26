@@ -17,8 +17,6 @@ public class GameManager : MonoBehaviour
     public GameObject loseScreen;
     public GameObject pauseScreen;
     public GameObject countdownScreen;
-    public Text resumeCountdownText;
-    public int resumeTime = 3;
 
     private int score = 0;
     private int currentResumeTime;
@@ -84,28 +82,7 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         pauseScreen.SetActive(false);
-
-        currentResumeTime = resumeTime;
-        SetTimeRemainingForResume();
-        Invoke("HideResumeScreen", resumeTime);
-        snake.Invoke("StartMoving", resumeTime);
-        countdownScreen.SetActive(true);
-        for (int i = resumeTime - 1; i > 0; i--) {
-            Debug.Log("Invoking in " + i.ToString() + " seconds");
-            Invoke("SetTimeRemainingForResume", i);
-        }
-    }
-
-    private void HideResumeScreen()
-    {
-        currentResumeTime = resumeTime;
-        countdownScreen.SetActive(false);
-    }
-
-    private void SetTimeRemainingForResume()
-    {
-        resumeCountdownText.text = "Resuming in " + currentResumeTime.ToString() + "...";
-        currentResumeTime--;
+        snake.StartMoving();
     }
 
     private void PlayerWins()
