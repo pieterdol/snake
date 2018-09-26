@@ -33,8 +33,10 @@ public class Snake : MonoBehaviour
     private bool grow = false;
     private bool isPlaying = true;
 
+    private static List<SnakeBlock> snakeBlocks = new List<SnakeBlock>();
+
     // Use this for initialization
-    void Start ()
+    void Start()
     {
         CreateInitialBlocks(startPosition);
 
@@ -72,7 +74,14 @@ public class Snake : MonoBehaviour
             ) as SnakeBlock;
         snakeBlock.transform.parent = transform;
 
+        snakeBlocks.Add(snakeBlock);
+
         return snakeBlock;
+    }
+
+    internal static List<SnakeBlock> SnakeBlocks()
+    {
+        return snakeBlocks;
     }
 
     public void Grow()
@@ -118,9 +127,10 @@ public class Snake : MonoBehaviour
 
     internal void Reset()
     {
-        foreach (Transform snakeBlock in transform) {
-            Destroy(snakeBlock.gameObject);
+        for (int i = 0; i < snakeBlocks.Count; i++) {
+            Destroy(snakeBlocks[i].gameObject);
         }
+        snakeBlocks.Clear();
         direction = startDirection;
         currentDirection = startDirection;
         CreateInitialBlocks(startPosition);
@@ -148,8 +158,7 @@ public class Snake : MonoBehaviour
 
     private void ConnectSnakeBlocks()
     {
-        SnakeBlock[] snakeBlocks = FindObjectsOfType<SnakeBlock>();
-        int snakeBlocksCount = snakeBlocks.Length;
+        int snakeBlocksCount = snakeBlocks.Count;
 
         for (int i = 0; i < snakeBlocksCount; i++) {
             snakeBlocks[i].HideAllParts();

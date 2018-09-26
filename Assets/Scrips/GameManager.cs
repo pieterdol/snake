@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
 
     internal List<Vector3> FreeSpots()
     {
-        SnakeBlock[] snakeBlocks = FindObjectsOfType<SnakeBlock>();
+        List<SnakeBlock> snakeBlocks = Snake.SnakeBlocks();
 
         Vector3 lowerLeftCorner = new Vector3(
             (gridWidth / 2) * -1,
