@@ -40,16 +40,17 @@ public class Snake : MonoBehaviour
     {
         CreateInitialBlocks(startPosition);
 
-        Move();
+        Invoke("Move", moveEveryXSeconds);
     }
 
     private void CreateInitialBlocks(Vector3 position)
     {
+        snakeBlocks = new List<SnakeBlock>();
         for (int i = 0; i < blockStartAmount; i++) {
             SnakeBlock snakeBlock = CreateBlock(position);
             position = snakeBlock.Position();
             // Subtract one unit for every block
-            position.x -= (i + 1);
+            position.x -= 1;
         }
 
         ConnectSnakeBlocks();
@@ -73,6 +74,7 @@ public class Snake : MonoBehaviour
                 Quaternion.identity
             ) as SnakeBlock;
         snakeBlock.transform.parent = transform;
+        snakeBlock.SetPosition(position);
 
         snakeBlocks.Add(snakeBlock);
 
