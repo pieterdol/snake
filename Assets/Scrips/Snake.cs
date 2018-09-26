@@ -127,8 +127,8 @@ public class Snake : MonoBehaviour
 
     internal void Reset()
     {
-        for (int i = 0; i < snakeBlocks.Count; i++) {
-            Destroy(snakeBlocks[i].gameObject);
+        foreach (SnakeBlock snakeBlock in snakeBlocks) {
+            Destroy(snakeBlock.gameObject);
         }
         snakeBlocks.Clear();
         direction = startDirection;
