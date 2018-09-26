@@ -97,14 +97,14 @@ public class GameManager : MonoBehaviour
             gridHeight / 2
         );
 
-        float lowY = lowerLeftCorner.y + gridOffsetY;
-        float highY = upperRightCorner.y + gridOffsetY;
-        float lowX = lowerLeftCorner.x + gridOffsetX;
-        float highX = upperRightCorner.x + gridOffsetX;
+        float yStart = lowerLeftCorner.y + gridOffsetY;
+        float yEnd = upperRightCorner.y + gridOffsetY;
+        float xStart = lowerLeftCorner.x + gridOffsetX;
+        float xEnd = upperRightCorner.x + gridOffsetX;
 
         List<Vector3> freeSpots = new List<Vector3>();
-        for (float y = lowY; y <= highY; y++) {
-            for (float x = lowX; x <= highX; x++) {
+        for (float y = yStart; y <= yEnd; y++) {
+            for (float x = xStart; x <= xEnd; x++) {
                 Boolean freeSpot = true;
                 foreach (SnakeBlock snakeBlock in snakeBlocks) {
                     if (snakeBlock.transform.position.x == x && snakeBlock.transform.position.y == y) {
