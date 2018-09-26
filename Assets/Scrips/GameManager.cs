@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     public GameObject winScreen;
     public GameObject loseScreen;
     public GameObject pauseScreen;
-    public GameObject countdownScreen;
 
     private int score = 0;
     private int currentResumeTime;
