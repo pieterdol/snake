@@ -11,6 +11,19 @@ public class SnakeBlock : MonoBehaviour
     public GameObject bottom;
     public GameObject left;
     public GameObject right;
+    private GameManager gameManager;
+
+    private void Start()
+    {
+        gameManager = FindObjectOfType<GameManager>();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<SnakeBlock>() || collision.gameObject.tag == "Wall") {
+            gameManager.GameOver();
+        }
+    }
 
     public SnakeBlock(Vector3 blockPosition)
     {

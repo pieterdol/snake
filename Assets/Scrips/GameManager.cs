@@ -6,20 +6,21 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
     [Header("Snake")]
     public Snake snake;
     public FoodSpawner foodSpawner;
+    private bool isAlive = true;
 
     [Header("UI")]
     public Text scoreText;
     private int score = 0;
+    public GameObject winScreen;
+    public GameObject loseScreen;
 
     [Header("Grid")]
     public int gridHeight = 16;
     public int gridWidth = 26;
     public float gridOffsetX = 0;
-
     public float gridOffsetY = 1;
 
     // Use this for initialization
@@ -35,14 +36,19 @@ public class GameManager : MonoBehaviour
         scoreText.text = "Score: " +  score.ToString();
 
         Vector3 newPosition = transform.position;
-        if (Input.GetKey(KeyCode.LeftArrow) && snake.currentDirection != Snake.Directions.Right) {
-            snake.direction = Snake.Directions.Left;
-        } else if (Input.GetKey(KeyCode.RightArrow) && snake.currentDirection != Snake.Directions.Left) {
-            snake.direction = Snake.Directions.Right;
-        } else if (Input.GetKey(KeyCode.DownArrow) && snake.currentDirection != Snake.Directions.Up) {
-            snake.direction = Snake.Directions.Down;
-        } else if (Input.GetKey(KeyCode.UpArrow) && snake.currentDirection != Snake.Directions.Down) {
-            snake.direction = Snake.Directions.Up;
+        if (Input.GetKey(KeyCode.LeftArrow) && snake.CurrentDirection() != Snake.Directions.Right) {
+            snake.SetDirection(Snake.Directions.Left);
+        } else if (Input.GetKey(KeyCode.RightArrow) && snake.CurrentDirection() != Snake.Directions.Left) {
+            snake.SetDirection(Snake.Directions.Right);
+        } else if (Input.GetKey(KeyCode.DownArrow) && snake.CurrentDirection() != Snake.Directions.Up) {
+            snake.SetDirection(Snake.Directions.Down);
+        } else if (Input.GetKey(KeyCode.UpArrow) && snake.CurrentDirection() != Snake.Directions.Down) {
+            snake.SetDirection(Snake.Directions.Up);
+        } else if (!isAlive && Input.GetKey(KeyCode.Space)) {
+            snake.Reset();
+            score = 0;
+            HideLoseScreen();
+            snake.StartMoving();
         }
     }
 
@@ -92,15 +98,30 @@ public class GameManager : MonoBehaviour
 
         List<Vector3> freeSpots = FreeSpots();
         if (freeSpots.Count <= 0) {
-            // @TODO Handle winning the game
-            Debug.Log("YOU WIN!!!");
-
+            PlayerWins();
             snake.StopMoving();
         } else {
             foodSpawner.Spawn(freeSpots);
 
             snake.Grow();
         }
+    }
+
+    private void PlayerWins()
+    {
+        winScreen.SetActive(true);
+    }
+
+    public void GameOver()
+    {
+        isAlive = false;
+        loseScreen.SetActive(true);
+        snake.StopMoving();
+    }
+
+    private void HideLoseScreen()
+    {
+        loseScreen.SetActive(false);
     }
 
     internal List<Vector3> FreeSpots()

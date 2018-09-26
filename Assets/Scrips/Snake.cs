@@ -16,13 +16,20 @@ public class Snake : MonoBehaviour
         Right,
         Left
     };
-    public Directions direction = Directions.Right;
-    public Directions currentDirection = Directions.Right;
+
+    // This direction always stays the same and is use when starting and resetting the game
+    public Directions startDirection = Directions.Right;
+
+    // This direction is changed anytime the user presses a key (up, down, left or right)
+    private Directions direction = Directions.Right;
+
+    // This direction changes when calling Move(), it gets set to this.direction
+    // This direction is also used to check which direction the snake can go, in GameManager
+    private Directions currentDirection = Directions.Right;
 
     public float moveEveryXSeconds = 0.1f;
     public int blockStartAmount = 3;
 
-    private bool isAlive = true;
     private bool grow = false;
     private bool isPlaying = true;
 
@@ -31,7 +38,7 @@ public class Snake : MonoBehaviour
     {
         CreateInitialBlocks(startPosition);
 
-        Invoke("Move", moveEveryXSeconds);
+        Move();
     }
 
     private void CreateInitialBlocks(Vector3 position)
@@ -44,6 +51,16 @@ public class Snake : MonoBehaviour
         }
 
         ConnectSnakeBlocks();
+    }
+
+    internal void SetDirection(Directions setToDirection)
+    {
+        direction = setToDirection;
+    }
+
+    internal Directions CurrentDirection()
+    {
+        return currentDirection;
     }
 
     private SnakeBlock CreateBlock(Vector3 position)
@@ -77,14 +94,36 @@ public class Snake : MonoBehaviour
             newPosition = oldPosition;
         }
         if (grow) {
-            CreateBlock(newPosition);
             grow = false;
+            CreateBlock(newPosition);
         }
         ConnectSnakeBlocks();
-
-        if (isAlive && isPlaying) {
+        if (isPlaying) {
             Invoke("Move", moveEveryXSeconds);
         }
+    }
+
+    internal void StartMoving()
+    {
+        isPlaying = true;
+        CancelInvoke("Move");
+        Invoke("Move", 0.5f);
+    }
+
+    internal void StopMoving()
+    {
+        isPlaying = false;
+        CancelInvoke("Move");
+    }
+
+    internal void Reset()
+    {
+        foreach (Transform snakeBlock in transform) {
+            Destroy(snakeBlock.gameObject);
+        }
+        direction = startDirection;
+        currentDirection = startDirection;
+        CreateInitialBlocks(startPosition);
     }
 
     private void SetDirectionToFood()
@@ -123,11 +162,6 @@ public class Snake : MonoBehaviour
                 snakeBlocks[i].ConnectTo(snakeBlocks[i + 1]);
             }
         }
-    }
-
-    internal void StopMoving()
-    {
-        isPlaying = false;
     }
 
     private Vector3 GetNewPositionForFirstBlock(Vector3 currentPosition)
