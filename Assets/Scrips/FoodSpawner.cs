@@ -19,17 +19,4 @@ public class FoodSpawner : MonoBehaviour
             Quaternion.identity
         );
     }
-
-    //private Vector3 GetRandomFreePosition(GameManager gameManager)
-    //{
-    //    List<Vector3>[] freeSpots = GetFreeSpots(gameManager);
-
-    //    return freeSpots[new System.Random().Next(0, freeSpots.Length)];
-    //}
-
-    //private List<Vector3>[] GetFreeSpots(GameManager gameManager)
-    //{
-
-    //    return freeSpots;
-    //}
 }
