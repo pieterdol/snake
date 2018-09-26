@@ -52,46 +52,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void CreateSideWall(float xPosition, GameObject wallPrefab)
-    {
-        int start = 0 - gridHeight / 2;
-
-        for (int i = start; i <= gridHeight / 2; i++) {
-            Vector3 wallPosition = new Vector3(
-                xPosition,
-                i * 1 + gridOffsetY,
-                0
-            );
-
-            GameObject wall = Instantiate(
-                wallPrefab,
-                wallPosition,
-                Quaternion.identity
-            ) as GameObject;
-            wall.transform.parent = transform;
-        }
-    }
-
-    private void CreateUpperLowerWall(float yPosition, GameObject wallPrefab)
-    {
-        int start = 0 - gridWidth / 2;
-
-        for (int i = start; i <= gridWidth / 2; i++) {
-            Vector3 wallPosition = new Vector3(
-                i * 1 + gridOffsetX,
-                yPosition,
-                0
-            );
-
-            GameObject wall = Instantiate(
-                wallPrefab,
-                wallPosition,
-                Quaternion.identity
-            ) as GameObject;
-            wall.transform.parent = transform;
-        }
-    }
-
     public void FoodWasEaten()
     {
         score++;
@@ -137,9 +97,14 @@ public class GameManager : MonoBehaviour
             gridHeight / 2
         );
 
+        float lowY = lowerLeftCorner.y + gridOffsetY;
+        float highY = upperRightCorner.y + gridOffsetY;
+        float lowX = lowerLeftCorner.x + gridOffsetX;
+        float highX = upperRightCorner.x + gridOffsetX;
+
         List<Vector3> freeSpots = new List<Vector3>();
-        for (int y = (int)lowerLeftCorner.y + 1; y <= (int)upperRightCorner.y + 1; y++) {
-            for (int x = (int)lowerLeftCorner.x; x <= (int)upperRightCorner.x; x++) {
+        for (float y = lowY; y <= highY; y++) {
+            for (float x = lowX; x <= highX; x++) {
                 Boolean freeSpot = true;
                 foreach (SnakeBlock snakeBlock in snakeBlocks) {
                     if (snakeBlock.transform.position.x == x && snakeBlock.transform.position.y == y) {
